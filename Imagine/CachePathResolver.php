@@ -2,7 +2,6 @@
 
 namespace Avalanche\Bundle\ImagineBundle\Imagine;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 class CachePathResolver
@@ -13,15 +12,15 @@ class CachePathResolver
     private $webRoot;
 
     /**
-     * @var Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     private $router;
 
     /**
      * Constructs cache path resolver with a given web root and cache prefix
      *
-     * @param string                                    $webRoot
-     * @param Symfony\Component\Routing\RouterInterface $router
+     * @param string          $webRoot
+     * @param RouterInterface $router
      */
     public function __construct($webRoot, RouterInterface $router)
     {
@@ -35,6 +34,8 @@ class CachePathResolver
      * @param string $path
      * @param string $filter
      * @param boolean $absolute
+     *
+     * @return string
      */
     public function getBrowserPath($path, $filter, $absolute = false)
     {
@@ -51,9 +52,9 @@ class CachePathResolver
             urldecode(ltrim($path, '/')),
             $this->router->generate('_imagine_'.$filter, array(
                 'path' => ltrim($path, '/')
-            ), $absolute)
+            ), $absolute ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH)
         );
-        
+
         $cached = realpath($this->webRoot.$path);
 
         if (file_exists($cached) && filemtime($realPath) > filemtime($cached)) {
