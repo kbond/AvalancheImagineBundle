@@ -12,11 +12,6 @@ use Avalanche\Bundle\ImagineBundle\Imagine\CacheManager;
 class ImagineController
 {
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var ImagineInterface
      */
     private $imagine;
@@ -34,14 +29,12 @@ class ImagineController
     /**
      * Constructs by setting $cachePathResolver
      *
-     * @param Request          $request
      * @param ImagineInterface $imagine
      * @param CacheManager     $cacheManager
      * @param FilterManager    $filterManager
      */
-    public function __construct(Request $request, ImagineInterface $imagine, CacheManager $cacheManager, FilterManager $filterManager)
+    public function __construct(ImagineInterface $imagine, CacheManager $cacheManager, FilterManager $filterManager)
     {
-        $this->request = $request;
         $this->imagine = $imagine;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
@@ -51,15 +44,16 @@ class ImagineController
      * This action applies a given filter to a given image, saves the image and
      * outputs it to the browser at the same time
      *
-     * @param string $path
-     * @param string $filter
+     * @param string  $path
+     * @param string  $filter
+     * @param Request $request
      *
      * @return Response
      */
-    public function filter($path, $filter)
+    public function filter($path, $filter, Request $request)
     {
-        $cachedPath = $this->cacheManager->cacheImage($this->request->getBaseUrl(), $path, $filter);
-        
+        $cachedPath = $this->cacheManager->cacheImage($request->getBaseUrl(), $path, $filter);
+
          // if cache path cannot be determined, return 404
         if (null === $cachedPath) {
             throw new NotFoundHttpException('Image doesn\'t exist');

@@ -52,7 +52,7 @@
     </parameters>
 
     <services>
-        
+
         <!-- Utility services -->
 
         <service id="imagine.cache.path.resolver" class="%imagine.cache.path.resolver.class%">
@@ -75,8 +75,7 @@
 
         <!-- Controller -->
 
-        <service id="imagine.controller" class="%imagine.controller.class%" scope="request">
-            <argument type="service" id="request" />
+        <service id="imagine.controller" class="%imagine.controller.class%">
             <argument type="service" id="imagine" />
             <argument type="service" id="imagine.cache.manager" />
             <argument type="service" id="imagine.filter.manager" />
@@ -91,8 +90,8 @@
         </service>
 
         <!-- ImagineInterface instances -->
-        
-        <service id="imagine" alias="imagine.gd" /> 
+
+        <service id="imagine" alias="imagine.gd" />
 
         <service id="imagine.gd" class="%imagine.gd.class%" />
 
