@@ -43,6 +43,7 @@ class ImagineLoader extends Loader
                     $requirements,
                     array(),
                     '',
+                    array(),
                     array('GET')
                 ));
             }
