@@ -3,19 +3,18 @@
 namespace Avalanche\Bundle\ImagineBundle\Templating;
 
 use Avalanche\Bundle\ImagineBundle\Imagine\CachePathResolver;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ImagineExtension extends \Twig_Extension
 {
     /**
-     * @var Avalanche\Bundle\ImagineBundle\Imagine\CachePathResolver
+     * @var CachePathResolver
      */
     private $cachePathResolver;
 
     /**
      * Constructs by setting $cachePathResolver
      *
-     * @param Avalanche\Bundle\ImagineBundle\Imagine\CachePathResolver $cachePathResolver
+     * @param CachePathResolver $cachePathResolver
      */
     public function __construct(CachePathResolver $cachePathResolver)
     {
@@ -29,7 +28,7 @@ class ImagineExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'apply_filter' => new \Twig_Filter_Method($this, 'applyFilter'),
+            new \Twig_SimpleFunction('apply_filter', [$this, 'applyFilter']),
         );
     }
 
@@ -45,14 +44,5 @@ class ImagineExtension extends \Twig_Extension
     public function applyFilter($path, $filter, $absolute = false)
     {
         return $this->cachePathResolver->getBrowserPath($path, $filter, $absolute);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see Twig_ExtensionInterface::getName()
-     */
-    public function getName()
-    {
-        return 'imagine';
     }
 }
